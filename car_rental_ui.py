@@ -2,7 +2,7 @@ import streamlit as st
 import joblib
 
 def load_model():
-    return joblib.load("profile_verification_model.pkl")
+    return joblib.load("Model/profile_verification_model.pkl")
 
 model = load_model()
 
@@ -37,7 +37,6 @@ with st.form("car_rental_form"):
             company_verified_binary, 
             no_of_companies_worked, 
             followers, 
-            target
         ]
         
         # Predict using the loaded model
