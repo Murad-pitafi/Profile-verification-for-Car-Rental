@@ -26,10 +26,10 @@ with st.form("car_rental_form"):
     
     # Action on button click
     if predict_button:
-        
+        # Convert "Yes"/"No" to binary as required by the model
         company_verified_binary = 1 if company_verified == "Yes" else 0
 
-        # Prepare data as required by the model (e.g., in a list, DataFrame, etc.)
+        # Prepare data as required by the model
         input_data = [
             headline, 
             no_of_license_certificates, 
@@ -40,10 +40,17 @@ with st.form("car_rental_form"):
         ]
         
         # Predict using the loaded model
-        prediction = model.predict([input_data])  # Ensure `input_data` is in the correct format for your model
+        prediction = model.predict([input_data])
 
-        # Here you could call your prediction model with the entered data
-        st.success(f"Prediction for {username}: {prediction[0]}")
+        # Map the prediction to a friendly label
+        if prediction[0] == 1:
+            verification_status = "Verified"
+            
+        else: 
+            verification_status= "Not Verified"
+
+        # Display the result using the mapped status
+        st.success(f"Prediction for {username}: {verification_status}")
 
 # Display the result or any additional information as needed
 st.write("Complete the form and click Predict to see the result.")
