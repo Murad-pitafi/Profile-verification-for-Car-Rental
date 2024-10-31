@@ -20,7 +20,6 @@ with st.form("car_rental_form"):
     company_verified = st.selectbox("Company Verified", options=["Yes", "No"])
     no_of_companies_worked = st.number_input("Number of Companies Worked", min_value=0, step=1)
     followers = st.number_input("Followers", min_value=0, step=1)
-    target = st.text_input("Target")
     
     # Submit Button
     predict_button = st.form_submit_button("Predict")
