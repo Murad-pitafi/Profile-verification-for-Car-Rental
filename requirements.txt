@@ -1,0 +1,4 @@
+joblib
+sciket-learn
+Pipeline
+streamlit
