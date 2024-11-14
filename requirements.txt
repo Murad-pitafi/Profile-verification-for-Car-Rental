@@ -1,4 +1,4 @@
 joblib
-sciket-learn
+scikit-learn
 Pipeline
 streamlit
