@@ -6,7 +6,7 @@ def load_model():
 
 model = load_model()
 
-st.title("Car Rental Prediction System")
+st.title("Profile Classification App")
 
 # Form for Input Details
 with st.form("car_rental_form"):
