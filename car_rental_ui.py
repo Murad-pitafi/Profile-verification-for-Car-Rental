@@ -44,7 +44,7 @@ with st.form("car_rental_form"):
         prediction = model.predict([input_data])
 
         # Map the prediction to a friendly label
-        class_type_mapping = {2: "Type A", 1: "Type C", 0: "Type B"}
+        class_type_mapping = {2: "A Class Profile ", 1: "C Class Profile", 0: "B Class Profile"}
         verification_status = class_type_mapping.get(prediction[0], "Unknown")
 
         # Display the result using the mapped status
