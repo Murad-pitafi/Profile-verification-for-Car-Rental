@@ -2,7 +2,7 @@ import streamlit as st
 import joblib
 
 def load_model():
-    return joblib.load("Model/profile_verification_model.pkl")
+    return joblib.load("Model/profile_verification_synthetic_model.pkl")
 
 model = load_model()
 
@@ -14,14 +14,14 @@ with st.form("car_rental_form"):
     
     # Input Fields
     name = st.text_input("Name")
-    experience = st.number_input("Experience (Years)", min_value=0, step=1)
     education_level = st.number_input("Education Level", min_value=0, step=1)
-    followers = st.number_input("Followers", min_value=0, step=1)
-    skill_endorsements = st.number_input("Skill Endorsements", min_value=0, step=1)
-    recommendations = st.number_input("Recommendations", min_value=0, step=1)
-    activity = st.number_input("Activity", min_value=0, step=1)
-    projects = st.number_input("Projects", min_value=0, step=1)
-    certificates = st.number_input("Certificates", min_value=0, step=1)
+    experience = st.number_input("Experience (Years)", min_value=0, step=1)
+    experience_month = st.number_input("Experience (Months)", min_value=0, step=1)
+    connections= st.number_input("Connections", min_value=0, step=1)
+    recent_post = st.number_input("Recent Post(Months Ago)", min_value=0, step=1)
+    reaction_recent_post = st.number_input("Reactions on Recent Post", min_value=0, step=1)
+    comments = st.number_input("Comments on Recent Post", min_value=0, step=1)
+    repost = st.number_input("Reposts on Recent Post", min_value=0, step=1)
     
     # Submit Button
     predict_button = st.form_submit_button("Predict")
@@ -30,14 +30,14 @@ with st.form("car_rental_form"):
     if predict_button:
         # Prepare data as required by the model
         input_data = [
-            experience, 
-            education_level, 
-            followers, 
-            skill_endorsements, 
-            recommendations, 
-            activity, 
-            projects, 
-            certificates,
+            education_level,
+            experience,
+            experience_month,  
+            connections,  
+            recent_post, 
+            reaction_recent_post, 
+            comments, 
+            repost,
         ]
         
         # Predict using the loaded model
