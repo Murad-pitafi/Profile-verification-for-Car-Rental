@@ -1,4 +1,6 @@
-joblib
-scikit-learn
-Pipeline
 streamlit
+scikit-learn
+joblib
+pandas
+numpy
+Pipeline
