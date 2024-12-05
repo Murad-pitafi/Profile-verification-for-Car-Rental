@@ -49,6 +49,6 @@ jobs:
     # Commit and push changes (model file)
     - name: Commit and push model
       run: |
-        git add models/logistic_regression_model.pkl
+        git add app/profile_verification_synthetic_model.pkl
         git commit -m "Automated model training update [GitHub Actions]"
         git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
