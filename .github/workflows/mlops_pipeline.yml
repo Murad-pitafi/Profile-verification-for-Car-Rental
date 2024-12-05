@@ -34,13 +34,13 @@ jobs:
       - name: Run Preprocessing
         run: |
           source venv/bin/activate
-          python preprocess.py
+          python app/preprocess.py
 
       # Step 5: Train the model
       - name: Train Model
         run: |
           source venv/bin/activate
-          python train.py
+          python app/train.py
 
       # Step 6: Commit and push model changes (optional if model is updated)
       - name: Commit and Push Trained Model
