@@ -27,6 +27,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    # Create and activate virtual environment
+    - name: Set up virtual environment
+      run: |
+        python -m venv venv  # Creates the virtual environment
+        source venv/bin/activate  # Activates the virtual environment
+        pip install -r requirements.txt  # Install dependencies in venv
+
     # Train the model
     - name: Train the model
       run: |
