@@ -1,0 +1,54 @@
+name: MLOps Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Run on pushes to the main branch
+  pull_request:
+    branches:
+      - main  # Run on pull requests to the main branch
+
+jobs:
+  build-and-train:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'  # Choose your Python version
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+
+      # Step 4: Run preprocessing script
+      - name: Run Preprocessing
+        run: |
+          source venv/bin/activate
+          python preprocess.py
+
+      # Step 5: Train the model
+      - name: Train Model
+        run: |
+          source venv/bin/activate
+          python train.py
+
+      # Step 6: Commit and push model changes (optional if model is updated)
+      - name: Commit and Push Trained Model
+        run: |
+          git config --local user.name "GitHub Action"
+          git config --local user.email "actions@github.com"
+          git add .
+          git commit -m "Automated model training update [GitHub Actions]"
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Provided by GitHub Actions automatically
