@@ -1,54 +1,54 @@
-name: Model Training and Push
+name: CI/CD for Model Training
 
 on:
   push:
     branches:
-      - main  # Adjust to the branch you want to trigger on
+      - main
   workflow_dispatch:
 
 jobs:
-  build:
+  train_model:
     runs-on: ubuntu-latest
-
+    
     steps:
-    # Checkout the repository
-    - name: Checkout code
-      uses: actions/checkout@v2
+      # Step 1: Checkout the code
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    # Set up Python environment
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
 
-    # Install dependencies
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
 
-    # Create and activate virtual environment
-    - name: Set up virtual environment
-      run: |
-        python -m venv venv  # Creates the virtual environment
-        source venv/bin/activate  # Activates the virtual environment
-        pip install -r requirements.txt  # Install dependencies in venv
+      # Step 4: Run preprocess and train the model
+      - name: Preprocess and Train the Model
+        run: |
+          source venv/bin/activate
+          python app/preprocess.py
+          python app/train.py
 
-    # Train the model
-    - name: Train the model
-      run: |
-        source venv/bin/activate
-        python app/train.py
+      # Step 5: Check if the model file has changed
+      - name: Check for model file changes
+        run: |
+          git diff --exit-code -- app/profile_verification_synthetic_model.pkl || echo "Model file has changed, committing..."
 
-    # Set Git configuration for GitHub Actions user
-    - name: Set Git config
-      run: |
-        git config --local user.name "GitHub Action"
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-
-    # Commit and push changes (model file)
-    - name: Commit and push model
-      run: |
-        git add models/logistic_regression_model.pkl
-        git commit -m "Automated model training update [GitHub Actions]"
-        git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
+      # Step 6: Commit and push if there are changes in the model file
+      - name: Commit and push model if changed
+        run: |
+          if [[ $(git diff --stat app/profile_verification_synthetic_model.pkl) != '' ]]; then
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git config --local user.name "GitHub Actions"
+            git add app/profile_verification_synthetic_model.pkl
+            git commit -m "Automated model training update [GitHub Actions]"
+            git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
+          else
+            echo "No changes in model file, skipping commit and push."
+          fi
